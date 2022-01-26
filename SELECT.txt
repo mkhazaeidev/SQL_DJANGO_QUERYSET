@@ -1,1 +1,95 @@
-1. 
+1. SELECT * FROM table_name;
+    - query_set = ClassName.objects.all()
+
+2. SELECT column1, column2, ... FROM table_name;
+    - query_set = ClassName.objects.all().values_list('column1', 'column2', ...)
+
+3. SELECT DISTINCT column_name FROM table_name;
+    - query_set = ClassName.objects.values('column_name').distinct()
+
+4. SELECT COUNT(column_name) FROM table_name;
+
+5. SELECT COUNT(DISTINCT column) FROM table_name;
+
+6. SELECT column1, column2, ... FROM table_name WHERE condition;
+    a.  query_set = ClassName.objects.filter(condition).values('column1', 'column2', ...)
+
+    b.  query_set = ClassName.objects.filter(condition).values_list('column1', 'column2', ...)
+
+    c.  query_set = ClassName.objects.filter(condition).only('column1', 'column2', ...)
+
+7. SELECT * FROM table_name WHERE condition1 AND condition2;
+    a.  query_set = ClassName.objects.filter(condition1, condition2)
+
+    b.  queryset = ClassName.objects.filter(condition1) & ClassName.objects.filter(condition2)
+
+    c.  from django.db.models import Q
+        queryset = ClassName.objects.filter(Q(condition1) & Q(condition2))
+
+8. SELECT * FROM table_name WHERE condition1 OR condition2;
+    a.  query_set = ClassName.objects.filter(condition1) | ClassName.objects.filter(condition2)
+    
+    b.  from django.db.models import Q
+        query_set = ClassName.objects.filter(Q(condition1)|Q(condition2))
+
+9. SELECT * FROM table_name WHERE NOT condition;
+    a.  query_set = ClassName.objects.exclude(condition)
+        
+    b.  from django.db.models import Q
+        query_set = ClassName.objects.filter(~Q(condition))
+
+
+10. SELECT * FROM table_name ORDER BY column_name ASC;
+    - query_set = ClassName.objects.all().order_by('column_name')
+
+11. SELECT * FROM table_name ORDER BY column_name DESC;
+    - query_set = ClassName.objects.all().order_by('-column_name')
+
+12. SELECT column_names FROM table_name WHERE column_name IS NULL;
+    a. query_set = ClassName.objects.get(column_name__exact=None)
+
+    b. query_set = ClassName.objects.filter(column_name__isnull=True)
+
+13. SELECT column_names FROM table_name WHERE column_name IS NOT NULL;
+    a. from django.db.models import Q
+       query_set = ClassName.objects.get(~Q(column_name__exact=None))
+
+    b. query_set = ClassName.objects.filter(column_name__isnull=False)
+
+
+# ************************************************************************** #
+14. SELECT column1, column2, ... FROM table_name WHERE column_name LIKE pattern;
+    - query_set = ClassName.objects.filter(column_name__lookuptype = 'pattern').values_list('column1', 'column2', ...)
+
+15. SELECT * FROM table_name WHERE column_name = 'pattern';
+    - query_set = ClassName.objects.get(column_name__exact='pattern')
+
+16. SELECT * FROM table_name WHERE column_name ILINK 'pattern';
+    - query_set = ClassName.objects.get(column_name__iexact='pattern')
+
+17. SELECT * FROM table_name WHERE column_name LIKE '%pattern%';
+    - query_set = ClassName.objects.get(column_name__contains='pattern')
+
+18. SELECT * FROM table_name WHERE column_name ILIKE '%pattern%';
+    - query_set = ClassName.objects.get(column_name__icontains='Lennon')
+
+19. SELECT * FROM table_name WHERE id IN (1, 3, 4);
+    query_set = ClassName.objects.filter(id__in=[1, 3, 4])
+
+20. SELECT * FROM table_name WHERE column_name IN ('a', 'b', 'c');
+    Entry.objects.filter(column_name__in='abc')
+
+21. SELECT * FROM table_name WHERE column_name > 4;
+    query_set = ClassName.objects.filter(column_name__gt=4)
+
+22. SELECT * FROM table_name WHERE column_name LIKE 'pattern%';
+    query_set = ClassName.objects.filter(column_name__startswith='pattern')
+
+23. SELECT * FROM table_name WHERE column_name ILIKE 'pattern%';
+    query_set = ClassName.objects.filter(column_name__istartswith='pattern')
+
+24. SELECT * FROM table_name WHERE column_name LIKE '%pattern';
+    query_set = ClassName.objects.filter(column_name__endswith='pattern')
+
+25. SELECT * FROM table_name WHERE column_name ILIKE '%pattern'
+    query_set = ClassName.objects.filter(column_name__iendswith='pattern')
